@@ -76,9 +76,9 @@ class SoilCarbonPipeline:
                 )
         return orgc
 
-    def read_process_save_data_to_db(self) -> None:
+    def read_process_save_data_to_db(self, CSV_PATH) -> None:
         # Read the data from the CSV file
-        with open('./data/data_belgium.csv') as csvfile:
+        with open(f'{CSV_PATH}') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 self.location = self.populate_location_table(row)
@@ -96,21 +96,16 @@ class SoilCarbonPipeline:
         self.session.commit()
 
 
-# Replace with your own database credentials
-DB_USERNAME = 'your_username'
-DB_PASSWORD = 'your_password'
-DB_HOST = 'your_host'
-DB_NAME = 'your_database_name'
-
 def main():
     DB_USERNAME = os.environ['PG_USER']
     DB_PASSWORD  = os.environ['PG_PASSWORD']
     DB_HOST = os.environ['PG_HOST']
     DB_PORT = os.environ['PG_PORT']
     DB_NAME =  os.environ['PG_DB_NAME']
+    CSV_PATH = './data/data_belgium.csv'
 
     pipeline = SoilCarbonPipeline(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME)
-    pipeline.read_process_save_data_to_db()
+    pipeline.read_process_save_data_to_db(CSV_PATH)
 
 
 
