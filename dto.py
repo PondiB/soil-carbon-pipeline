@@ -32,8 +32,6 @@ class Orgc(Base):
     profile_id = Column(Integer, ForeignKey('profile.id'))
     orgcmethod_id = Column(Integer, ForeignKey('orgcmethod.id'))
     orgc_value_avg = Column(Float)
-    orgc_method = Column(String)
-    #orgc_date = Column(Date)
     orgc_dataset_id = Column(String)
     orgc_profile_code = Column(String)
     profile = relationship('Profile', back_populates='orgc')
