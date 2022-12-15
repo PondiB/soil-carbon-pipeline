@@ -2,7 +2,7 @@ import os
 import csv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .dto import Location, Profile, Orgc, Orgcmethod
+from dto import Location, Profile, Orgc, Orgcmethod
 
 
 
@@ -103,7 +103,7 @@ def main():
     DB_HOST = os.environ['PG_HOST']
     DB_PORT = os.environ['PG_PORT']
     DB_NAME =  os.environ['PG_DB_NAME']
-    
+
     CSV_PATH = './data/data_belgium.csv'
 
     pipeline = SoilCarbonPipeline(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME)
