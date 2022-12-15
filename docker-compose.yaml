@@ -1,0 +1,49 @@
+version: "3.9"
+services:
+  pgdatabase:
+    image: postgres:13
+    container_name: soil-carbon-postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=soil_carbon
+    volumes:
+      - "./postgres_data:/var/lib/postgresql/data:rw"
+    ports:
+      - "5432:5432"
+    restart: always
+
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: soil-carbon-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    ports:
+      - "8090:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    restart: always
+
+  soil-carbon-pipeline:
+    build: .
+    image: soil-carbon-pipeline:v0.0.1
+    container_name: soil-carbon-etl
+    environment:
+      - PG_USER=${PG_USER}
+      - PG_PASSWORD=${PG_PASSWORD}
+      - PG_HOST=${PG_HOST}
+      - PG_PORT=${PG_PORT}
+      - PG_DB_NAME=${PG_DB_NAME}
+      - PG_TABLE_NAME=${PG_TABLE_NAME}
+      - WEB_URL=${WEB_URL}
+      - YEAR=${YEAR}
+    volumes:
+      - ./soil_carbon_etl.py:/soil_carbon_etl.py
+    depends_on:
+      - pgdatabase
+    command: python soil_carbon_etl.py
+
+volumes:
+    pgadmin-data:
