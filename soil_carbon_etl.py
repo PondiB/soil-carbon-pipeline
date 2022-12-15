@@ -41,7 +41,7 @@ class SoilCarbonPipeline:
         return profile
 
     def populate_orgcmethod_table(self,row) -> Orgcmethod:
-        # Check if the orgc method already exists in the database
+        # preprocess the orgc methods
         methods = row['orgc_method']
         methods = (str(methods)[2:-2]).split(",")
         orgc_methods_list =[]
@@ -49,6 +49,7 @@ class SoilCarbonPipeline:
             data = (method.split("="))[1]
             orgc_methods_list.append(data)
         calculation, detection, reaction, sample_pretreatment, temperature, treatment = orgc_methods_list
+        # Check if the orgc method already exists in the database
         orgcmethod = self.session.query(Orgcmethod).filter_by(calculation=calculation, reaction=reaction, treatment= treatment).first()
         if orgcmethod is None:
             # Create a new orgcmethod object
@@ -102,6 +103,7 @@ def main():
     DB_HOST = os.environ['PG_HOST']
     DB_PORT = os.environ['PG_PORT']
     DB_NAME =  os.environ['PG_DB_NAME']
+    
     CSV_PATH = './data/data_belgium.csv'
 
     pipeline = SoilCarbonPipeline(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME)
