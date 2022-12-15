@@ -36,9 +36,6 @@ services:
       - PG_HOST=${PG_HOST}
       - PG_PORT=${PG_PORT}
       - PG_DB_NAME=${PG_DB_NAME}
-      - PG_TABLE_NAME=${PG_TABLE_NAME}
-      - WEB_URL=${WEB_URL}
-      - YEAR=${YEAR}
     volumes:
       - ./soil_carbon_etl.py:/soil_carbon_etl.py
     depends_on:
