@@ -28,7 +28,6 @@ services:
 
   soil-carbon-pipeline:
     build: .
-    image: soil-carbon-pipeline:v0.0.1
     container_name: soil-carbon-etl
     environment:
       - PG_USER=${PG_USER}
