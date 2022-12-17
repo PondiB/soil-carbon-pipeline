@@ -66,7 +66,7 @@ class SoilCarbonPipeline:
             )
         return orgcmethod
 
-    def populate_orgc_table(self, row) -> Orgc:
+    def _populate_orgc_table(self, row) -> Orgc:
         # Check if the orgc value already exists in the database
         orgc = self.session.query(Orgc).filter_by(orgc_value=row['orgc_value'],orgc_dataset_id=row['orgc_dataset_id'], orgc_profile_code=row['orgc_profile_code']).first()
         if orgc is None:
