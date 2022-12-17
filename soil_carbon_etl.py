@@ -18,7 +18,7 @@ class SoilCarbonPipeline:
         self.orgcmethod = Orgcmethod()
         self.orgc = Orgc()
 
-    def populate_location_table(self, row) -> Location:
+    def _populate_location_table(self, row) -> Location:
         # Check if the location already exists in the database
         location = self.session.query(Location).filter_by(x=row['X'], y=row['Y']).first()
         if location is None:
@@ -26,7 +26,7 @@ class SoilCarbonPipeline:
             location = Location(x=row['X'], y=row['Y'], country_name=row['country_name'])
         return location
 
-    def populate_profile_table(self, row) -> Profile:
+    def _populate_profile_table(self, row) -> Profile:
         # Check if the profile already exists in the database
         profile = self.session.query(Profile).filter_by(profile_layer_id=row['profile_layer_id']).first()
         if profile is None:
@@ -40,7 +40,7 @@ class SoilCarbonPipeline:
         )
         return profile
 
-    def populate_orgcmethod_table(self,row) -> Orgcmethod:
+    def _populate_orgcmethod_table(self,row) -> Orgcmethod:
         # preprocess the orgc methods
         methods = row['orgc_method']
         methods = (str(methods)[2:-2]).split(",")
@@ -77,24 +77,24 @@ class SoilCarbonPipeline:
                 )
         return orgc
 
-    def read_process_save_data_to_db(self, CSV_PATH) -> None:
+    def _read_process_save_data_to_db(self, CSV_PATH) -> None:
         # Read the data from the CSV file
         with open(f'{CSV_PATH}') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                self.location = self.populate_location_table(row)
-                self.profile = self.populate_profile_table(row)
-                self.orgcmethod = self.populate_orgcmethod_table(row)
-                self.orgc = self.populate_orgc_table(row)      
+                self.location = self._populate_location_table(row)
+                self.profile = self._populate_profile_table(row)
+                self.orgcmethod = self._populate_orgcmethod_table(row)
+                self.orgc = self._populate_orgc_table(row)      
         
-        # Add the objects to the session
-        self.session.add(self.location)
-        self.session.add(self.profile)
-        self.session.add(self.orgcmethod)
-        self.session.add(self.orgc)
+                # Add the objects to the session
+                self.session.add(self.location)
+                self.session.add(self.profile)
+                self.session.add(self.orgcmethod)
+                self.session.add(self.orgc)
 
-        # Commit the changes to the database
-        self.session.commit()
+                # Commit the changes to the database
+                self.session.commit()
 
 
 def main():
