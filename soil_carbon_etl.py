@@ -1,10 +1,14 @@
 import os
 import csv
+import logging
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from dto import Location, Profile, Orgc, Orgcmethod
 
+logging.basicConfig(filename='pipeline.log', level=logging.INFO)
 
+__author__  = "Brian Pondi"
+__status__  = "Development"
 
 class SoilCarbonPipeline:
     
@@ -96,6 +100,7 @@ class SoilCarbonPipeline:
 
                 # Commit the changes to the database
                 self.session.commit()
+        logging.info('The session is coming to a close')
         self.session.close()
 
 
@@ -113,11 +118,5 @@ def main():
 
 
 
-
-
-
-        
-
-
-
-
+    logging.info('==========================The process is complete=============================')
+    logging.info('------------------------------------------------------------------------------')
