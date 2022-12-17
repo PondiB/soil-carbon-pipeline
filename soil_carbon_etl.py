@@ -17,10 +17,10 @@ class SoilCarbonPipeline:
         self.engine = create_engine(f'postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}')
         self.Session = sessionmaker(bind=self.engine)
         self.session = self.Session()
-        self.location = Location()
-        self.profile = Profile()
-        self.orgcmethod = Orgcmethod()
-        self.orgc = Orgc()
+        self.location : Location = None
+        self.profile : Profile = None
+        self.orgcmethod : Orgcmethod = None
+        self.orgc : Orgc = None
 
     def _populate_location_table(self, row) -> Location:
         # Check if the location already exists in the database
@@ -75,14 +75,13 @@ class SoilCarbonPipeline:
                 profile_id = self.profile.id,
                 orgcmethod_id = self.orgcmethod.id,
                 orgc_value_avg = row['orgc_value_avg'],
-                orgc_date = row['orgc_date'],
                 orgc_dataset_id = row['orgc_dataset_id'],
                 orgc_profile_code = row['orgc_profile_code']
                 )
         return orgc
 
     def read_process_save_data_to_db(self, CSV_PATH) -> None:
-        self.session()
+        self.session 
         # Read the data from the CSV file
         with open(f'{CSV_PATH}') as csvfile:
             reader = csv.DictReader(csvfile)
