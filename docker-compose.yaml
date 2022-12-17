@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   pgdatabase:
-    image: postgres:13
+    image: postgres:13.9
     container_name: soil-carbon-postgres
     environment:
       - POSTGRES_USER=root
