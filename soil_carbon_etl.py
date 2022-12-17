@@ -78,6 +78,7 @@ class SoilCarbonPipeline:
         return orgc
 
     def read_process_save_data_to_db(self, CSV_PATH) -> None:
+        self.session()
         # Read the data from the CSV file
         with open(f'{CSV_PATH}') as csvfile:
             reader = csv.DictReader(csvfile)
@@ -95,6 +96,7 @@ class SoilCarbonPipeline:
 
                 # Commit the changes to the database
                 self.session.commit()
+        self.session.close()
 
 
 def main():
