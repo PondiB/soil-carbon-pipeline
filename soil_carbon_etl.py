@@ -14,7 +14,7 @@ class SoilCarbonPipeline:
     
     def __init__(self, DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME) -> None:
         # Set up the database engine and session
-        self.engine = create_engine(f'postgres://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}')
+        self.engine = create_engine(f'postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}')
         self.Session = sessionmaker(bind=self.engine)
         self.session = self.Session()
         self.location = Location()
