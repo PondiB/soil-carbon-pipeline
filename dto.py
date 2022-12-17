@@ -11,7 +11,6 @@ class Location(Base):
     x = Column(Float)
     y = Column(Float)
     country_name = Column(String)
-    profile = relationship('Profile', back_populates='location')
 
 class Profile(Base):
     __tablename__ = 'profile'
@@ -48,4 +47,4 @@ class Orgcmethod(Base):
     sample_pretreatment = Column(String)
     temperature = Column(String)
     treatment = Column(String)
-    orgc = relationship('Orgc', back_populates='orgcmethod')
+    #orgc = relationship('Orgc', back_populates='orgcmethod')
