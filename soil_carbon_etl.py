@@ -28,18 +28,22 @@ class SoilCarbonPipeline:
         self.orgc : Orgc = None
 
     def _populate_location_table(self, row) -> Location:
-        if not self.metadata.exists(self.engine, 'location'):
+        if self.metadata.exists(self.engine, 'location'):
             # Check if the location already exists in the database
             location = self.session.query(Location).filter_by(x=row['X'], y=row['Y']).first()
+        else:
+            location = None
         if location is None:
             # Create a new location object
             location = Location(x=row['X'], y=row['Y'], country_name=row['country_name'])
         return location
 
     def _populate_profile_table(self, row) -> Profile:
-        if not self.metadata.exists(self.engine, 'profile'):
+        if self.metadata.exists(self.engine, 'profile'):
             # Check if the profile already exists in the database
             profile = self.session.query(Profile).filter_by(profile_layer_id=row['profile_layer_id']).first()
+        else:
+            profile = None
         if profile is None:
             # Create a new profile object
             profile = Profile(
@@ -60,9 +64,12 @@ class SoilCarbonPipeline:
             data = (method.split("="))[1]
             orgc_methods_list.append(data)
         calculation, detection, reaction, sample_pretreatment, temperature, treatment = orgc_methods_list
-        if not self.metadata.exists(self.engine, 'orgcmethod'):
+        # check if the table exists
+        if self.metadata.exists(self.engine, 'orgcmethod'):
             # Check if the orgc method already exists in the database
             orgcmethod = self.session.query(Orgcmethod).filter_by(calculation=calculation, reaction=reaction, treatment= treatment).first()
+        else:
+            orgcmethod = None
         if orgcmethod is None:
             # Create a new orgcmethod object
             orgcmethod = Orgcmethod(
@@ -75,9 +82,11 @@ class SoilCarbonPipeline:
         return orgcmethod
 
     def _populate_orgc_table(self, row) -> Orgc:
-        if not self.metadata.exists(self.engine, 'orgc'):
+        if self.metadata.exists(self.engine, 'orgc'):
             # Check if the orgc value already exists in the database
             orgc = self.session.query(Orgc).filter_by(orgc_value=row['orgc_value'],orgc_dataset_id=row['orgc_dataset_id'], orgc_profile_code=row['orgc_profile_code']).first()
+        else:
+            orgc = None
         if orgc is None:
             # Create a new orgc object
             orgc = Orgc(
@@ -90,9 +99,9 @@ class SoilCarbonPipeline:
         return orgc
 
     def read_process_save_data_to_db(self, CSV_PATH) -> None:
-        self.session 
+        self.session
         # Create the tables
-        Base.metadata.create_all(self.engine)
+        Base.metadata.create_all(self.engine) 
         # Read the data from the CSV file
         with open(f'{CSV_PATH}') as csvfile:
             reader = csv.DictReader(csvfile)
